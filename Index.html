@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeLedger | Trading Journal</title>
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Professional Trading Journal">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="brand">
+    <h1>TradeLedger</h1>
+    <p>Professional Trading Journal</p>
+  </div>
+  <div class="header-actions">
+    <span id="storageStatus">Loading...</span>
+    <button id="themeBtn" type="button">🌙</button>
+    <button id="adminBtn" type="button">⚙️ Admin</button>
+  </div>
+</header>
+
+<main class="container">
+
+  <nav class="main-nav">
+    <a href="#dashboard">Dashboard</a>
+    <a href="#tradeSection">New Trade</a>
+    <a href="#historySection">History</a>
+    <a href="#backupSection">Backup</a>
+    <a href="#adminPanel">Admin</a>
+  </nav>
+
+  <section class="dashboard panel" id="dashboard">
+    <div class="section-heading">
+      <h2>Dashboard</h2>
+      <span class="section-tag">Overview</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><p>Total Trades</p><h2 id="totalTrades">0</h2></div>
+      <div class="stat-card"><p>Winning Trades</p><h2 id="winningTrades">0</h2></div>
+      <div class="stat-card"><p>Losing Trades</p><h2 id="losingTrades">0</h2></div>
+      <div class="stat-card"><p>Win Rate</p><h2 id="winRate">0%</h2></div>
+      <div class="stat-card"><p>Gross P&L</p><h2 id="grossPL">₹0.00</h2></div>
+      <div class="stat-card"><p>Total Charges</p><h2 id="totalCharges">₹0.00</h2></div>
+      <div class="stat-card"><p>Net P&L</p><h2 id="netPL">₹0.00</h2></div>
+    </div>
+  </section>
+
+  <section class="trade-section panel" id="tradeSection">
+    <div class="section-heading">
+      <h2>Trade Details</h2>
+      <button id="newTradeBtn" type="button">+ New Trade</button>
+    </div>
+
+    <form id="tradeForm">
+      <input type="hidden" id="tradeId">
+
+      <h3>Basic Information</h3>
+      <div class="form-grid">
+        <label>Date<input type="date" id="tradeDate" required></label>
+        <label>Voucher Number<input type="text" id="voucherNumber"></label>
+        <label>Stock Name<input type="text" id="stockName" required placeholder="Stock name"></label>
+        <label>Capital (₹)<input type="number" id="capital" min="0" step="0.01"></label>
+        <label>Leverage<input type="number" id="leverage" min="1" step="0.1" value="1"></label>
+        <label>Strategy
+          <select id="strategy">
+            <option value="">Select Strategy</option>
+            <option>ORB</option>
+            <option>Breakout</option>
+            <option>Support & Resistance</option>
+            <option>Price Action</option>
+            <option>Scalping</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Risk Reward Ratio<input type="text" id="riskReward" placeholder="1:2"></label>
+        <label>Trade Result
+          <select id="tradeResult">
+            <option value="">Select Result</option>
+            <option>Win</option>
+            <option>Loss</option>
+            <option>Break Even</option>
+          </select>
+        </label>
+        <label>Buy / Sell
+          <select id="tradeType">
+            <option value="Buy">Buy</option>
+            <option value="Sell">Sell</option>
+          </select>
+        </label>
+      </div>
+
+      <label>Notes<textarea id="notes" rows="3"></textarea></label>
+
+      <h3>Buy Details</h3>
+      <div class="form-grid">
+        <label>Buy Quantity<input type="number" id="buyQty" min="0" step="1"></label>
+        <label>Buy Price Per Share (₹)<input type="number" id="buyPrice" min="0" step="0.01"></label>
+        <label>Total Stock Buy Value (₹)<input type="number" id="buyStockValue" readonly></label>
+        <label>Buy Charge (₹)<input type="number" id="buyCharge" min="0" step="0.01" value="0"></label>
+        <label>Extra Buy Charge (₹)<input type="number" id="extraBuyCharge" min="0" step="0.01" value="0"></label>
+        <label>Total Buy Charges (₹)<input type="number" id="totalBuyCharges" readonly></label>
+        <label>Total Buy Value (₹)<input type="number" id="totalBuyValue" readonly></label>
+      </div>
+
+      <h3>Sell Details</h3>
+      <div class="form-grid">
+        <label>Sell Quantity<input type="number" id="sellQty" min="0" step="1"></label>
+        <label>Sell Price Per Share (₹)<input type="number" id="sellPrice" min="0" step="0.01"></label>
+        <label>Total Stock Sell Value (₹)<input type="number" id="sellStockValue" readonly></label>
+        <label>Sell Charge (₹)<input type="number" id="sellCharge" min="0" step="0.01" value="0"></label>
+        <label>Extra Sell Charge (₹)<input type="number" id="extraSellCharge" min="0" step="0.01" value="0"></label>
+        <label>Total Sell Charges (₹)<input type="number" id="totalSellCharges" readonly></label>
+        <label>Total Sell Value (₹)<input type="number" id="totalSellValue" readonly></label>
+        <label>Price Movement (₹)<input type="number" id="priceMovement" readonly></label>
+      </div>
+
+      <h3>Profit & Loss</h3>
+      <div class="form-grid">
+        <label>Gross Profit / Loss (₹)<input type="number" id="grossPLInput" readonly></label>
+        <label>Total Charges (₹)<input type="number" id="totalChargesInput" readonly></label>
+        <label>Net Profit / Loss (₹)<input type="number" id="netPLInput" readonly></label>
+      </div>
+
+      <h3>Custom Fields</h3>
+      <div id="customFieldsContainer" class="form-grid"></div>
+
+      <h3>Attachments</h3>
+      <label>Chart Screenshots<input type="file" id="chartImages" accept="image/*" multiple></label>
+      <label>Contract Note (PDF / Image)<input type="file" id="contractNote" accept="application/pdf,image/*"></label>
+
+      <div class="form-actions">
+        <button type="submit" id="saveTradeBtn">Save Trade</button>
+        <button type="reset" id="resetTradeBtn">Clear Form</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="history-section panel" id="historySection">
+    <h2>Trade History</h2>
+    <div class="form-grid">
+      <label>Filter Period
+        <select id="periodFilter">
+          <option value="all">Overall</option>
+          <option value="day">Today</option>
+          <option value="week">This Week</option>
+          <option value="month">This Month</option>
+          <option value="year">This Year</option>
+        </select>
+      </label>
+      <label>Search Stock<input type="search" id="searchStock" placeholder="Search stock..."></label>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Voucher</th>
+            <th>Stock</th>
+            <th>Strategy</th>
+            <th>Result</th>
+            <th>Net P&L</th>
+            <th>Custom Fields</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tradeHistory">
+          <tr><td colspan="8">No trades recorded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="backup-section panel" id="backupSection">
+    <h2>Backup & Restore</h2>
+    <button type="button" id="exportBtn">Export Backup</button>
+    <label class="restore-label">Restore Backup
+      <input type="file" id="importFile" accept=".json,application/json">
+    </label>
+  </section>
+
+  <section id="adminPanel" class="panel admin-panel" hidden>
+    <div class="section-heading">
+      <h2>⚙️ Admin Panel</h2>
+      <button type="button" id="closeAdminBtn">Close</button>
+    </div>
+
+    <h3>Dynamic Field Manager</h3>
+    <p class="admin-description">
+      Create and manage your own Trade Journal fields.
+    </p>
+
+    <form id="fieldForm">
+      <input type="hidden" id="fieldId">
+
+      <label>Field Name
+        <input id="fieldName" type="text" required placeholder="Example: Entry Reason">
+      </label>
+
+      <label>Field Type
+        <select id="fieldType">
+          <option value="text">Text</option>
+          <option value="number">Number</option>
+          <option value="date">Date</option>
+          <option value="dropdown">Dropdown</option>
+        </select>
+      </label>
+
+      <label>Dropdown Options
+        <input id="fieldOptions" type="text" placeholder="Bullish, Bearish, Sideways" disabled>
+      </label>
+
+      <div class="admin-options">
+        <label><input id="fieldInForm" type="checkbox" checked> Show in Trade Form</label>
+        <label><input id="fieldInHistory" type="checkbox"> Show in Trade History</label>
+        <label><input id="fieldRequired" type="checkbox"> Required Field</label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Save Field</button>
+        <button type="button" id="cancelFieldEdit">Cancel</button>
+      </div>
+    </form>
+
+    <h3>Existing Custom Fields</h3>
+    <div id="fieldList"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>TradeLedger © 2026 | Your Trading Journal</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
