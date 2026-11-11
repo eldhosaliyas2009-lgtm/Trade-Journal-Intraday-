@@ -1,0 +1,317 @@
+:root {
+  --bg: #0b1120;
+  --panel: #151f32;
+  --panel2: #1b2940;
+  --text: #e8edf7;
+  --muted: #9aa9bd;
+  --border: #2b3b54;
+  --primary: #3b82f6;
+  --green: #22c55e;
+  --red: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.header {
+  background: #101827;
+  padding: 18px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  gap: 15px;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #60a5fa;
+  font-size: 25px;
+}
+
+.brand p {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.container {
+  width: 92%;
+  max-width: 1400px;
+  margin: 25px auto;
+}
+
+.dashboard,
+.trade-section,
+.history-section,
+.backup-section {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 21px;
+}
+
+h3 {
+  color: #93c5fd;
+  font-size: 16px;
+  margin: 25px 0 15px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--border);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat-card {
+  background: var(--panel2);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.stat-card p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0;
+}
+
+.stat-card h2 {
+  font-size: 23px;
+  margin: 10px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #0c1627;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  font: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
+}
+
+input[readonly] {
+  background: #18263a;
+  color: #93c5fd;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button,
+.restore-label {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 17px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover,
+.restore-label:hover {
+  filter: brightness(1.12);
+}
+
+#resetTradeBtn {
+  background: #475569;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  margin-top: 18px;
+}
+
+table {
+  width: 100%;
+  min-width: 750px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+th {
+  background: var(--panel2);
+  color: #93c5fd;
+}
+
+td {
+  color: var(--text);
+}
+
+.restore-label {
+  display: inline-flex;
+  margin: 10px 0;
+}
+
+.restore-label input {
+  display: none;
+}
+
+.backup-section button {
+  margin-right: 10px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--muted);
+  font-size: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.positive {
+  color: var(--green);
+}
+
+.negative {
+  color: var(--red);
+}
+
+@media (max-width: 850px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 550px) {
+  .header {
+    padding: 15px 4%;
+  }
+
+  .brand h1 {
+    font-size: 20px;
+  }
+
+  .brand p {
+    font-size: 11px;
+  }
+
+  .header-actions {
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .container {
+    width: 94%;
+    margin: 15px auto;
+  }
+
+  .dashboard,
+  .trade-section,
+  .history-section,
+  .backup-section {
+    padding: 15px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .stat-card h2 {
+    font-size: 19px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+}
