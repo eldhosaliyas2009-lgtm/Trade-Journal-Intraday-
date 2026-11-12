@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>TradeLedger - Trading Journal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>TradeLedger</h1>
+      <p>Trading Journal & Performance Tracker</p>
+    </div>
+    <button id="newTradeBtn" class="btn primary">+ New Trade</button>
+  </header>
+
+  <nav class="navigation">
+    <button class="nav-btn active" data-section="dashboardSection">Dashboard</button>
+    <button class="nav-btn" data-section="tradeFormSection">Add Trade</button>
+    <button class="nav-btn" data-section="tradeJournalSection">Journal</button>
+    <button class="nav-btn" data-section="backupSection">Backup</button>
+    <button id="adminOpenBtn" class="nav-btn">Field Manager</button>
+  </nav>
+
+  <main class="container">
+    <section id="dashboardSection" class="section active">
+      <div class="section-heading">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Your trading performance at a glance</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card"><span>Total Trades</span><strong id="totalTrades">0</strong></article>
+        <article class="stat-card"><span>Winning Trades</span><strong id="winningTrades">0</strong></article>
+        <article class="stat-card"><span>Losing Trades</span><strong id="losingTrades">0</strong></article>
+        <article class="stat-card"><span>Win Rate</span><strong id="winRate">0%</strong></article>
+        <article class="stat-card"><span>Gross P&amp;L</span><strong id="grossPL">₹0.00</strong></article>
+        <article class="stat-card"><span>Total Charges</span><strong id="totalCharges">₹0.00</strong></article>
+        <article class="stat-card highlight"><span>Net P&amp;L</span><strong id="netPL">₹0.00</strong></article>
+      </div>
+
+      <div class="panel">
+        <h3>Recent Trades</h3>
+        <div class="table-wrap">
+          <table class="sheet-table compact-table">
+            <thead>
+              <tr>
+                <th>Date</th><th>Stock</th><th>Trade Type</th>
+                <th>Result</th><th>Net P&amp;L</th>
+              </tr>
+            </thead>
+            <tbody id="recentTrades">
+              <tr><td colspan="5" class="empty">No trades saved yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tradeFormSection" class="section">
+      <div class="section-heading">
+        <div>
+          <h2 id="formHeading">Add New Trade</h2>
+          <p>Enter your trade details and save them to the journal.</p>
+        </div>
+      </div>
+
+      <form id="tradeForm" class="panel form-panel">
+        <input type="hidden" id="tradeId">
+
+        <h3>Basic Details</h3>
+        <div class="form-grid">
+          <label>Date<input type="date" id="tradeDate" required></label>
+          <label>Voucher Number<input type="text" id="voucherNumber" placeholder="Enter voucher number"></label>
+          <label>Stock Name<input type="text" id="stockName" placeholder="e.g. SAIL" required></label>
+          <label>Capital (₹)<input type="number" id="capital" min="0" step="0.01"></label>
+          <label>Leverage<input type="text" id="leverage" placeholder="e.g. 1x / 5x"></label>
+          <label>Strategy<input type="text" id="strategy" placeholder="e.g. ORB, Breakout"></label>
+          <label>Risk Reward Ratio<input type="text" id="riskReward" placeholder="e.g. 1:2"></label>
+          <label>Trade Type
+            <select id="tradeType">
+              <option value="">Select</option>
+              <option>Intraday</option><option>Short Term</option>
+              <option>Swing</option><option>Positional</option><option>Long Term</option>
+            </select>
+          </label>
+          <label>Trade Result
+            <select id="tradeResult">
+              <option value="">Select Result</option>
+              <option value="Win">Win</option>
+              <option value="Lose">Lose</option>
+              <option value="Break Even">Break Even</option>
+            </select>
+          </label>
+        </div>
+
+        <h3>Buy Details</h3>
+        <div class="form-grid">
+          <label>Buy Quantity<input type="number" id="buyQty" min="0" step="0.0001"></label>
+          <label>Buy Price (₹)<input type="number" id="buyPrice" min="0" step="0.0001"></label>
+          <label>Buy Stock Value (₹)<input type="number" id="buyStockValue" readonly></label>
+          <label>Buy Charges (₹)<input type="number" id="buyCharge" min="0" step="0.01"></label>
+          <label>Extra Buy Charges (₹)<input type="number" id="extraBuyCharge" min="0" step="0.01"></label>
+          <label>Total Buy Charges (₹)<input type="number" id="totalBuyCharges" readonly></label>
+          <label>Total Buy Value (₹)<input type="number" id="totalBuyValue" readonly></label>
+        </div>
+
+        <h3>Sell Details</h3>
+        <div class="form-grid">
+          <label>Sell Quantity<input type="number" id="sellQty" min="0" step="0.0001"></label>
+          <label>Sell Price (₹)<input type="number" id="sellPrice" min="0" step="0.0001"></label>
+          <label>Sell Stock Value (₹)<input type="number" id="sellStockValue" readonly></label>
+          <label>Sell Charges (₹)<input type="number" id="sellCharge" min="0" step="0.01"></label>
+          <label>Extra Sell Charges (₹)<input type="number" id="extraSellCharge" min="0" step="0.01"></label>
+          <label>Total Sell Charges (₹)<input type="number" id="totalSellCharges" readonly></label>
+          <label>Total Sell Value (₹)<input type="number" id="totalSellValue" readonly></label>
+        </div>
+
+        <h3>Profit &amp; Loss</h3>
+        <div class="form-grid">
+          <label>Price Movement (₹)<input type="number" id="priceMovement" readonly></label>
+          <label>Gross P&amp;L (₹)<input type="number" id="grossPLInput" readonly></label>
+          <label>Total Charges (₹)<input type="number" id="totalChargesInput" readonly></label>
+          <label>Net P&amp;L (₹)<input type="number" id="netPLInput" readonly></label>
+        </div>
+
+        <div id="customFieldsContainer" class="form-grid"></div>
+
+        <h3>Notes &amp; Attachments</h3>
+        <label class="full-label">Trade Notes
+          <textarea id="notes" rows="4" placeholder="Write your trade journal notes..."></textarea>
+        </label>
+        <div class="form-grid">
+          <label>Chart Images<input type="file" id="chartImages" accept="image/*" multiple></label>
+          <label>Contract Note / Document<input type="file" id="contractNote" multiple></label>
+        </div>
+        <p id="attachmentInfo" class="muted small"></p>
+
+        <div class="form-actions">
+          <button type="submit" id="saveTradeBtn" class="btn primary">Save Trade</button>
+          <button type="button" id="resetTradeBtn" class="btn secondary">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="tradeJournalSection" class="section">
+      <div class="section-heading journal-heading">
+        <div>
+          <h2>Trade Journal</h2>
+          <p>Spreadsheet view — each trade is displayed in one row.</p>
+        </div>
+        <span class="count-pill" id="journalTradeCount">0 Trades</span>
+      </div>
+
+      <div class="panel journal-panel">
+        <div class="journal-toolbar">
+          <input type="search" id="journalSearch" placeholder="Search stock or voucher number...">
+          <button type="button" id="exportJournalCsvBtn" class="btn secondary">Export CSV</button>
+        </div>
+        <div class="table-wrap spreadsheet-wrap">
+          <table class="sheet-table" id="journalTable">
+            <thead id="journalHead"></thead>
+            <tbody id="journalBody">
+              <tr><td class="empty">No trades saved yet. Add your first trade.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="table-hint">On mobile, swipe horizontally to view all columns.</p>
+      </div>
+    </section>
+
+    <section id="backupSection" class="section">
+      <div class="section-heading">
+        <div><h2>Backup &amp; Restore</h2><p>Keep a separate copy of your trading data.</p></div>
+      </div>
+      <div class="panel backup-panel">
+        <h3>Export Backup</h3>
+        <p>Download your trades and custom fields as a JSON backup file.</p>
+        <button id="exportBtn" class="btn primary" type="button">Download Backup</button>
+        <hr>
+        <h3>Import Backup</h3>
+        <p>Import a previously exported TradeLedger backup. Existing records with matching IDs may be updated.</p>
+        <input type="file" id="importFile" accept=".json,application/json">
+        <button id="importBtn" class="btn secondary" type="button">Import Backup</button>
+        <p id="backupMessage" class="small muted"></p>
+      </div>
+    </section>
+  </main>
+
+  <section id="adminPanel" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-heading">
+        <div><h2>Dynamic Field Manager</h2><p>Add or remove custom journal columns.</p></div>
+        <button id="closeAdminBtn" class="icon-btn" type="button">✕</button>
+      </div>
+      <form id="fieldForm">
+        <input type="hidden" id="fieldId">
+        <div class="form-grid">
+          <label>Field Name<input id="fieldName" required placeholder="e.g. Market Condition"></label>
+          <label>Field Type
+            <select id="fieldType">
+              <option value="text">Text</option>
+              <option value="number">Number</option>
+              <option value="date">Date</option>
+              <option value="dropdown">Dropdown</option>
+              <option value="checkbox">Checkbox</option>
+            </select>
+          </label>
+          <label class="full-label">Dropdown Options (comma separated)
+            <input id="fieldOptions" placeholder="Bullish, Bearish, Sideways">
+          </label>
+        </div>
+        <div class="field-checks">
+          <label><input type="checkbox" id="fieldInForm" checked> Show in Trade Form</label>
+          <label><input type="checkbox" id="fieldRequired"> Required</label>
+        </div>
+        <div class="form-actions">
+          <button class="btn primary" type="submit">Save Field</button>
+          <button class="btn secondary" id="cancelFieldEdit" type="button">Cancel</button>
+        </div>
+      </form>
+      <h3>Existing Custom Fields</h3>
+      <div id="fieldList" class="field-list"></div>
+    </div>
+  </section>
+
+  <section id="viewModal" class="modal" aria-hidden="true">
+    <div class="modal-card wide-modal">
+      <div class="modal-heading">
+        <h2>Trade Details</h2>
+        <button class="icon-btn" id="closeViewBtn" type="button">✕</button>
+      </div>
+      <div id="viewTradeContent"></div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
