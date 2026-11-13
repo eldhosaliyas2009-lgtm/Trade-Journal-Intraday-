@@ -1,5 +1,7 @@
 "use strict";
 
+/* TradeLedger build: 2026-11-14-0115 */
+
 /* ==========================================
    TRADELEDGER - COMPLETE REPLACEMENT
    Existing IndexedDB data preserved
