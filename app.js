@@ -324,17 +324,22 @@ function mountSharedTradeSections(workspaceId) {
   const workspace = $(workspaceId);
   const form = $("tradeFormSection");
   const journal = $("tradeJournalSection");
-  if (!workspace || !form || !journal) return;
+  const period = $("periodOverviewSection");
+  const reports = $("reportsSection");
+  if (!workspace || !form || !journal || !period || !reports) return;
 
-  // Keep one shared Add Trade and Journal DOM, but always mount it in the
-  // currently active trading workspace. Re-render after mounting so Swing
-  // and Long Term never inherit an empty/stale form from another mode.
+  // Add Trade, Journal, Period Overview and Reports & Analytics are shared
+  // sections. Move the same DOM into the active trading workspace so every
+  // trading mode gets the same features without duplicating storage or logic.
   workspace.appendChild(form);
   workspace.appendChild(journal);
+  workspace.appendChild(period);
+  workspace.appendChild(reports);
 
   renderStandardFormFields();
   renderCustomFormFields();
   renderJournal();
+  renderPeriodOverview();
 }
 
 function setModeNav(sectionId) {
@@ -1014,6 +1019,9 @@ function renderPeriodOverview() {
   const end = getFormValue("periodEndDate");
 
   const filtered = getVisibleTrades().filter(trade => {
+    // Swing + Long Term use Exit Date for period performance. Older records
+    // without Exit Date fall back to the stored trade date in
+    // getPerformanceDate(), preserving existing data.
     const performanceDate = getPerformanceDate(trade);
     if (start && performanceDate < start) return false;
     if (end && performanceDate > end) return false;
